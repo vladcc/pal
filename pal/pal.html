@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   
+	<script type="text/javascript">
+	<!--
+	/* pal implementation in JavaScript */
+
+		var MIN_P_LEN 	= 5;		// min password length
+		var MAX_P_LEN 	= 100;		// max password length
+		var PWD_LEN		= 20;		// default password length
+		var BYTE		= 0xFF;		// byte size
+		
+		// the character table
+		var TBL = "";
+		TBL += "0123456789qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+		TBL += "qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM01234567890123456789";
+		TBL += "0123456789QWERTYUIOPASDFGHJKLZXCVBNM01234567890123456789qwertyuiopasdfghjklzxcvbnm";
+		TBL += "QWERTYUIOPASDFGHJKLZXCVBNM01234567890123456789qwertyuiopasdfghjklzxcvbnm0123456789";
+		TBL += "01234567890123456789qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
+		
+		function main()
+		{
+			/* gets the input and outputs the password */
+			var key, tr;
+			var masterpwd = new Array();
+			var target = new Array(); 
+			var val_arr = new Array();
+			var password = "";
+			var tbl_len;	
+			var i, j;
+			
+			// get the length of the table
+			tbl_len = TBL.length;
+			
+			// get input
+			key = get_value("txtMasterPwd");
+			if(typeof key[0] == "undefined")
+				key = ' ';
+				
+			tr = get_value("txtTarget");
+			if(typeof tr[0] == "undefined")
+				tr = ' ';
+			
+			// get password length
+			i = get_value("txtPassLen");
+	
+			// set default password length
+			pass_len = PWD_LEN - 3; // room for xZ8
+			
+			// set custom length if legal
+			if (i >= MIN_P_LEN && i <= MAX_P_LEN)
+				pass_len = i - 3; 	// room for xZ8
+				
+			// transfer input strings to integer arrays	
+			for (i = 0, j = key.length; i < j; ++i)
+				masterpwd[i] = key.charCodeAt(i);
+			
+			for (i = 0, j = tr.length; i < j; ++i)
+				target[i] = tr.charCodeAt(i);
+			
+			// make strings pass_len characters long
+			masterpwd = put_salt(masterpwd, pass_len, target[0]);
+			target = put_salt(target, pass_len, masterpwd[0]);
+		
+			// do the cipher
+			val_arr = cipher(masterpwd, target, pass_len);
+	
+			// fetch characters from the table for final result
+			for (i = 0, j = val_arr.length; i < j; ++i)
+				password += TBL[val_arr[i] % tbl_len];
+			
+			// make sure we have at least one lower case, one upper case, and one digit
+			password += "xZ8";
+			
+			// output
+			document.getElementById("txtPassword").value = password;
+		}
+		
+		function get_value(ID) 
+		{
+			/* JavaScript stuff */
+			return document.getElementById(ID).value;
+		}
+
+		function put_salt(str, slt_ln, fill_start)
+		{
+			/* makes str slt_ln bytes long */
+			var new_string = new Array();
+			var str_len = str.length;
+			var code = fill_start;
+			var i, ittr;
+			
+			// see if str is longer than the password length
+			if ((ittr = slt_ln - str_len) < 0)
+			{
+				// feed back to front by xoring
+				var i, j, k;
+				for (i = 0, j = str_len, k = slt_ln - 1; j > slt_ln; ++i, --j)
+				{
+					str[i] ^= str[j - 1];
+					str[i] &= BYTE; // make sure it fits in a byte
+
+					if (i == k) // reset i
+						i = 0;
+				}
+				
+				return str;
+			}
+			else if (0 == ittr) // if it's exact length don't touch it
+				return str;
+			
+			new_string = str;
+			
+			// add i to every consecutive byte if shorter
+			for (i = 0; i < ittr; ++i, code += i)
+			{ 
+				new_string[str_len + i] = code;
+				
+				// make sure it fits in a byte
+				new_string[str_len + i] &= BYTE; 
+			}
+			
+			return new_string;
+		}
+		
+		function cipher(s1, s2, len)
+		{
+			/* simple coding based on the Vigenere cipher */
+			var i, j;
+			var out = new Array();
+
+			// shift s1 by s2
+			for (i = 0; i < len; ++i)
+				out[i] = s1[i] + s2[i];
+			
+			// multiply backwards
+			for (--i, j = 0; j < len; ++j, --i)
+				out[j] *= s2[i];
+			
+			return out;
+		}
+	 //-->
+	</script>
+
+	  <noscript>
+         Sorry...JavaScript is needed to go ahead.
+      </noscript>
+	  
+   </head>
+
+   <body>
+	   	<p> Hello and welcome to pal - the password algorithm.
+		<br><br>
+		Enter your master phrase and a target, and a fixed length password will be calculated for you.
+		<br>
+		The default size is 20 characters. However, you can choose to get a password anywhere between 5 and 100.
+		<br>
+		The last three are always xZ8 in order to make sure it contains a lower case, an upper case, and a number. 
+		<br>
+		The master password and the target are also limited to 100 characters max.
+		<br>
+		You can also save the page and use it offline or download pal for Windows and Linux. 
+		<br>
+		In the browser version all the work is done on your computer and no information is ever transffered.
+		<br><br>
+		</p>
+		
+		<p> Set length:
+		<br>
+		<input type="number" id="txtPassLen" min="5" max="100" />	
+		</p>
+		
+		<p> Enter master: 
+		<br>
+		<input type="password" id="txtMasterPwd" maxlength="100" />	
+		</p>
+		
+		<p> Enter target:
+		<br>
+		<input type="password" id="txtTarget" maxlength="100" />
+		</p>
+		
+		<p> Password:
+		<br>
+		<input type="text" id="txtPassword" maxlength="100" />
+		<br>
+		<input type="button" id="btnPwd" onclick="main()" value="Get Password" />
+		<br>
+		</p>
+		<!-- -->
+   </body>
+</html>
