@@ -1,7 +1,5 @@
 //#define WINDOWS/LINUX here
 
-#define WINDOWS
-
 // includes
 #include "pal.h"
 
