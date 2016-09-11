@@ -1,5 +1,5 @@
 # pal
-Deterministically calculate your passwords with this password algorithm.
+Deterministically calculate your passwords with this password algorithm
 
 pal is wonderful small algorithm which takes a pair of strings as an input, and calculates an output string which is a strong password.
 
