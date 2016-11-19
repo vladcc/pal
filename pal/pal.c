@@ -177,7 +177,7 @@ void put_salt(byte * str, int slt_ln, byte fill_start)
 
 void read_input(byte * in, size_t len, bool echo)
 {
-	/* reads len number of echoed/unechoed byteacters from 
+	/* reads len number of echoed/unechoed characters from 
 	 * the Windows cmd or the Linux terminal */
 	byte ch;
 	byte end_line;
@@ -204,7 +204,7 @@ void read_input(byte * in, size_t len, bool echo)
 					
 				continue;
 			}
-			// actually read byteacter
+			// actually read character
 			in[i] = ch;
 			++i;
 		}
@@ -225,7 +225,7 @@ void read_input(byte * in, size_t len, bool echo)
 					
 				continue;
 			}
-			// read byteacter
+			// read character
 			in[i] = ch;
 			++i;
 		}
