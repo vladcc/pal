@@ -14,7 +14,6 @@
 
 XCLP="xclip"
 PAL="palb"
-FILE="/tmp/.palbpasstmpf"
 
 # see if palb exists
 
@@ -33,11 +32,11 @@ else
 
 # run pal with the script's arguments,
 # remove new lines, 
-# place password in the clipboard, 
-# clean up	
+# place password in the clipboard,
+# run again to clean the clipboard
 
-	$PAL $@ > $FILE
-	cat $FILE | tr -d '\n' < $FILE | xclip -selection clipboard
-	rm $FILE
+	$PAL $@ | tr -d '\n' | xclip -selection clipboard
 	echo "You can now paste"
+	echo "Press enter twice to clean the clipboard when ready"
+	$PAL $@ 2> /dev/null | tr -d '\n' | xclip -selection clipboard
 fi
