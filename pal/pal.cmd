@@ -1,4 +1,5 @@
 @echo off
+REM 0. rename pal.exe to palb.exe
 REM 1. place palb.exe somewhere in your PATH 
 REM 2. place this script in the same directory
 REM 3. run pal
