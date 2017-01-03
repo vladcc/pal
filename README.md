@@ -19,7 +19,6 @@ Every time you enter mymasterpass and facebook, and not change the length, this 
 You can now use it as a password you don't have to remember. You will need pal when you want to log in, though.
 
 There are three versions - for Windows, for Linux, and a JavaScript implementation for browsers.
-The Windows and Linux versions offer the options to hide or show your input and the output. The Windows one can output the password directly to the clipboard, so you can paste it in the password field. 
-To do the same in Linux use the pal.sh script and follow the instructions there.
-
-After login don't forget to run pal again with empty input so to erase your password from the clipboard.
+The Windows and Linux versions offer the options to hide or show your input and output. The Windows version outputs to the clipboard so you can directly paste in any password field. 
+To do the same in Linux use pal.sh. On Windows it's also better to use pal.cmd rather than running pal directly, as the script runs
+pal a second time for you in order to clean the clipboard.
