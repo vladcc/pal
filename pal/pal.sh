@@ -36,7 +36,7 @@ else
 # run again to clean the clipboard
 
 	$PAL $@ | tr -d '\n' | xclip -selection clipboard
-	echo "You can now paste"
-	echo "Press enter twice to clean the clipboard when ready"
+	echo "You can now paste."
+	echo "Press enter twice to exit."
 	$PAL $@ 2> /dev/null | tr -d '\n' | xclip -selection clipboard
 fi
