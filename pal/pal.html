@@ -154,16 +154,6 @@
 </noscript>
 </head>
 <body>
-<div id="div_info" name="div_info"  style="display: none;">
-	<p>Hello and welcome to pal - the password algorithm.
-	<br><br>
-	Enter your master and target to get your password.
-	<br>
-	The default password length is 20 characters but you can set it anywhere between 5 and 100.
-	<br>
-	All passwords end in "xZ8" to make sure they contain a lower case letter, an upper case letter, and a number. 
-	</p>
-</div>
 Set length:
 <br>
 <input type="number" id="txtPassLen" min="5" max="100" />
@@ -183,6 +173,16 @@ Password:
 <input type="button" id="btnPwd" onclick="main()" value="Get Password" />
 <input type="button" id="btnInfo" onclick="show_info()" value="?" />
 <br>
+<div id="div_info" name="div_info"  style="display: none;">
+	<p>Hello and welcome to pal - the password algorithm.
+	<br>
+	Enter your master and target to get your password.
+	<br>
+	The default password length is 20 characters but you can set it anywhere between 5 and 100.
+	<br>
+	All passwords end in "xZ8" to make sure they contain a lower case letter, an upper case letter, and a number. 
+	</p>
+</div>
 <!-- -->
 </body>
 </html>
