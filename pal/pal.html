@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!--
+File version: v1.1
+Changes:
+1. Master and target boxes blank out after generation.
+2. The font in the password box is very small, so it can't be read.
+3. Added "?" button which shows/hides info.
+-->
 <html>
 <head>
 <script type="text/javascript">
@@ -16,6 +23,41 @@
 	TBL += "0123456789QWERTYUIOPASDFGHJKLZXCVBNM01234567890123456789qwertyuiopasdfghjklzxcvbnm";
 	TBL += "QWERTYUIOPASDFGHJKLZXCVBNM01234567890123456789qwertyuiopasdfghjklzxcvbnm0123456789";
 	TBL += "01234567890123456789qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
+	
+	// re-render the password box with very small font size
+	window.onload = pwd_box;
+	
+	function pwd_box()
+	{
+		/* calculate the password box dimensions, so we can change
+		 * the font size without change in height and width */
+		var newH = 10, newW = 10, fSize = 2
+		var txtPwd = document.getElementById("txtPassword");
+		
+		// get original offset dimensions
+		var ofsH = txtPwd.offsetHeight;
+		var ofsW = txtPwd.offsetWidth;
+		
+		// set style dimensions to a known value
+		txtPwd.style.height = newH + "px";
+		txtPwd.style.width = newW + "px";
+		
+		// get the difference between style and offset dimensions
+		var hDiff = txtPwd.offsetHeight - newH;
+		var wDiff = txtPwd.offsetWidth - newW;
+		
+		/* style dimensions = offset dimensions - difference between offset
+		 * dimensions and style dimensions */
+		var heightPx = ofsH - hDiff;
+		var widthPx = ofsW - wDiff;
+		
+		// set final height, width, and font size
+		txtPwd.style.fontSize = fSize + "px";
+		txtPwd.style.height = heightPx + "px";
+		txtPwd.style.width = widthPx + "px";
+
+		return;
+	}
 	
 	function main()
 	{
@@ -71,6 +113,8 @@
 		// make sure we have at least one lower case, one upper case, and one digit
 		password += "xZ8";
 		
+		document.getElementById("txtMasterPwd").value = "";
+		document.getElementById("txtTarget").value = "";
 		// output
 		document.getElementById("txtPassword").value = password;
 	}
@@ -160,11 +204,11 @@ Set length:
 <br>
  Enter master: 
 <br>
-<input type="password" id="txtMasterPwd" maxlength="100" />	
+<input type="password" id="txtMasterPwd" maxlength="127" />	
 <br>
  Enter target:
 <br>
-<input type="password" id="txtTarget" maxlength="100" />
+<input type="password" id="txtTarget" maxlength="127" />
 <br>
 Password:
 <br>
@@ -178,7 +222,11 @@ Password:
 	<br>
 	Enter your master and target to get your password.
 	<br>
-	The default password length is 20 characters but you can set it anywhere between 5 and 100.
+	The font in the password box is very small in order to not be readable, but so you can still cut/copy it. 
+	<br>
+	The default password length is 20 characters but you can set it anywhere between 5 and 100 including.
+	<br>
+	The master and the target strings are limited to 127 characters each.
 	<br>
 	All passwords end in "xZ8" to make sure they contain a lower case letter, an upper case letter, and a number. 
 	</p>
